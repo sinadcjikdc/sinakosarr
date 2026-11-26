@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>داستانِ ما</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #FCE7EF;
+    --pastel: #F4B8CB;
+    --rose: #E58EAE;
+    --dirty: #B85D7C;
+    --milk: #FFF9F8;
+    --text: #49323C;
+    --text-soft: rgba(73, 50, 60, 0.6);
+    --text-mute: rgba(73, 50, 60, 0.42);
+    --line: rgba(184, 93, 124, 0.12);
+    --line-mid: rgba(184, 93, 124, 0.24);
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Vazirmatn', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: radial-gradient(circle, rgba(184, 93, 124, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== هدر ===== */
+  .site-header {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100; height: 76px;
+    padding: 0 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(252, 231, 239, 0.78);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+  .brand-mark {
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line-mid); border-radius: 50%;
+    color: var(--dirty);
+  }
+  .brand-mark svg { width: 16px; height: 16px; }
+  .brand-text { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em; }
+
+  .nav { display: flex; align-items: center; gap: 32px; }
+  .nav a {
+    text-decoration: none; color: var(--text-soft);
+    font-size: 0.82rem; font-weight: 400;
+    transition: color 0.3s; position: relative;
+  }
+  .nav a:hover { color: var(--dirty); }
+  .nav a.active { color: var(--dirty); }
+  .nav a.active::after {
+    content: ''; position: absolute;
+    bottom: -8px; left: 0; right: 0;
+    height: 1px; background: var(--rose);
+  }
+
+  /* ===== هیرو ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 140px 32px 100px;
+    position: relative; z-index: 1;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.3em; color: var(--dirty);
+    margin-bottom: 36px;
+    animation: fadeIn 1s var(--ease);
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; width: 36px; height: 1px; background: var(--line-mid);
+  }
+  .hero-title {
+    font-size: clamp(2.6rem, 7.5vw, 5.6rem);
+    font-weight: 200; line-height: 1.15;
+    letter-spacing: -0.02em; margin-bottom: 28px;
+    animation: fadeUp 1.2s var(--ease);
+  }
+  .hero-title .accent {
+    display: block; font-weight: 500;
+    color: var(--dirty); margin-top: 10px;
+  }
+  .hero-sub {
+    max-width: 500px; font-size: 0.95rem;
+    font-weight: 300; color: var(--text-soft);
+    line-height: 1.95; margin-bottom: 48px;
+    animation: fadeUp 1.2s var(--ease) 0.1s both;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px; color: var(--text-mute);
+    font-size: 0.62rem; letter-spacing: 0.28em;
+    animation: fadeIn 1.5s var(--ease) 0.6s both;
+  }
+  .hero-scroll svg { width: 14px; height: 14px; animation: bounce 2s infinite; }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* ===== نوار آمار ===== */
+  .stats-strip {
+    max-width: 1180px; margin: 0 auto;
+    padding: 0 32px 100px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    position: relative; z-index: 1;
+  }
+  .stat {
+    text-align: center; padding: 32px 16px;
+    border-right: 1px solid var(--line);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    font-weight: 300; color: var(--text);
+    letter-spacing: -0.02em; line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-num.small { font-size: clamp(1.3rem, 2.6vw, 1.9rem); }
+  .stat-label {
+    font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.16em; color: var(--text-mute);
+    margin-top: 14px;
+  }
+  .stat-num .unit {
+    font-size: 0.55em; font-weight: 300;
+    margin-right: 3px; opacity: 0.65;
+  }
+
+  /* ===== بخش‌ها ===== */
+  section { position: relative; z-index: 1; padding: 100px 32px; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-head { max-width: 620px; margin: 0 auto 72px; text-align: center; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 0.66rem; font-weight: 500;
+    letter-spacing: 0.3em; color: var(--dirty);
+    margin-bottom: 20px;
+  }
+  .section-tag::before, .section-tag::after {
+    content: ''; width: 26px; height: 1px; background: var(--line-mid);
+  }
+  .section-head h2 {
+    font-size: clamp(1.7rem, 3.8vw, 2.7rem);
+    font-weight: 300; line-height: 1.25;
+    letter-spacing: -0.01em; margin-bottom: 16px;
+  }
+  .section-head p {
+    font-size: 0.88rem; font-weight: 300; color: var(--text-soft);
+  }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== گالری ===== */
+  .gallery-tabs {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 44px;
+  }
+  .gallery-tab {
+    padding: 9px 22px;
+    border: 1px solid var(--line-mid);
+    background: transparent;
+    color: var(--text-soft);
+    font-family: inherit; font-size: 0.78rem; font-weight: 400;
+    border-radius: 999px; cursor: pointer;
+    transition: all 0.35s var(--ease);
+    letter-spacing: 0.02em;
+  }
+  .gallery-tab:hover { border-color: var(--dirty); color: var(--dirty); }
+  .gallery-tab.active {
+    background: var(--text); color: var(--milk); border-color: var(--text);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+  }
+  .gallery-card {
+    position: relative; aspect-ratio: 4/5;
+    overflow: hidden; border-radius: 4px;
+    cursor: pointer; background: var(--milk);
+    border: 1px solid var(--line);
+    transition: all 0.6s var(--ease);
+    animation: fadeIn 0.5s var(--ease);
+  }
+  .gallery-card:nth-child(4n+1) { aspect-ratio: 4/6; }
+  .gallery-card:nth-child(4n+3) { aspect-ratio: 1/1; }
+  .gallery-card:hover {
+    border-color: var(--line-mid);
+    transform: translateY(-4px);
+  }
+  .gallery-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.8s var(--ease); display: block;
+  }
+  .gallery-card:hover img { transform: scale(1.05); }
+  .gallery-ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--milk); color: var(--pastel);
+  }
+  .gallery-ph svg { width: 28px; height: 28px; }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 24px;
+    background: linear-gradient(to top, rgba(73,50,60,0.9), transparent 55%);
+    opacity: 0; transition: opacity 0.4s var(--ease);
+  }
+  .gallery-card:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay .title {
+    color: var(--milk); font-size: 0.95rem;
+    font-weight: 500; letter-spacing: -0.01em;
+  }
+  .gallery-overlay .date {
+    color: var(--pastel); font-size: 0.68rem;
+    font-weight: 400; letter-spacing: 0.14em; margin-top: 4px;
+  }
+
+  .empty-state {
+    grid-column: 1 / -1; padding: 80px 24px; text-align: center;
+    border: 1px dashed var(--line-mid); border-radius: 4px;
+    color: var(--text-mute);
+  }
+  .empty-state svg { width: 26px; height: 26px; margin-bottom: 16px; opacity: 0.5; }
+  .empty-state h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+  .empty-state p { font-size: 0.82rem; font-weight: 300; }
+
+  /* ===== خط زمان ===== */
+  .timeline { max-width: 720px; margin: 0 auto; position: relative; padding-right: 32px; }
+  .timeline::before {
+    content: ''; position: absolute;
+    right: 0; top: 8px; bottom: 8px;
+    width: 1px; background: var(--line-mid);
+  }
+  .timeline-item { position: relative; padding: 0 32px 52px 0; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: ''; position: absolute;
+    right: -5px; top: 8px;
+    width: 11px; height: 11px;
+    border-radius: 50%; background: var(--milk);
+    border: 1.5px solid var(--rose);
+    transition: all 0.4s var(--ease);
+  }
+  .timeline-item:hover::before {
+    background: var(--rose); transform: scale(1.3);
+  }
+  .timeline-date {
+    display: block; font-size: 0.66rem;
+    font-weight: 500; letter-spacing: 0.2em;
+    color: var(--dirty); margin-bottom: 8px;
+  }
+  .timeline-item h3 {
+    font-size: 1.1rem; font-weight: 500;
+    margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+  .timeline-item p {
+    font-size: 0.87rem; font-weight: 300;
+    color: var(--text-soft); line-height: 1.9;
+  }
+
+  /* ===== دلایل ===== */
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .reason-card {
+    padding: 36px 30px;
+    background: var(--milk);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    transition: all 0.5s var(--ease);
+    position: relative;
+    overflow: hidden;
+  }
+  .reason-card::before {
+    content: ''; position: absolute;
+    top: 0; right: 0; width: 40px; height: 1px;
+    background: var(--rose); transition: width 0.5s var(--ease);
+  }
+  .reason-card:hover {
+    border-color: var(--line-mid);
+    transform: translateY(-4px);
+  }
+  .reason-card:hover::before { width: 100%; }
+  .reason-num {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.2em; color: var(--dirty);
+    margin-bottom: 20px;
+  }
+  .reason-card h3 {
+    font-size: 1.05rem; font-weight: 500;
+    margin-bottom: 12px; letter-spacing: -0.01em;
+  }
+  .reason-card p {
+    font-size: 0.87rem; font-weight: 300;
+    color: var(--text-soft); line-height: 1.9;
+  }
+
+  /* ===== نامه‌ها ===== */
+  .letters-list {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .letter-card {
+    padding: 44px 48px;
+    background: var(--milk);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.5s var(--ease);
+  }
+  .letter-card:hover { border-color: var(--line-mid); }
+  .letter-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .letter-title {
+    font-size: 1.05rem; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .letter-date {
+    font-size: 0.66rem; font-weight: 500;
+    letter-spacing: 0.2em; color: var(--dirty);
+  }
+  .letter-body {
+    font-size: 0.92rem; font-weight: 300;
+    line-height: 2.1; color: var(--text);
+    white-space: pre-line;
+  }
+
+  /* ===== پلی‌لیست ===== */
+  .playlist-list {
+    max-width: 720px; margin: 0 auto;
+    border-top: 1px solid var(--line);
+  }
+  .playlist-item {
+    display: flex; align-items: center; gap: 24px;
+    padding: 22px 8px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.3s;
+  }
+  .playlist-item:hover { background: rgba(255, 249, 248, 0.5); }
+  .playlist-num {
+    font-size: 0.72rem; font-weight: 500;
+    color: var(--text-mute); letter-spacing: 0.1em;
+    min-width: 26px;
+  }
+  .playlist-icon {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line-mid); border-radius: 50%;
+    color: var(--dirty); flex-shrink: 0;
+  }
+  .playlist-icon svg { width: 14px; height: 14px; }
+  .playlist-info { flex: 1; min-width: 0; }
+  .playlist-title {
+    font-size: 0.95rem; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .playlist-artist {
+    font-size: 0.78rem; font-weight: 300;
+    color: var(--text-soft); margin-top: 2px;
+  }
+  .playlist-note {
+    font-size: 0.72rem; font-weight: 400;
+    color: var(--dirty); font-style: italic;
+    padding-right: 8px; text-align: left;
+    max-width: 200px;
+  }
+
+  /* ===== آرزوها ===== */
+  .bucket-list {
+    max-width: 720px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .bucket-item {
+    display: flex; align-items: center; gap: 18px;
+    padding: 20px 24px;
+    background: var(--milk);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    transition: all 0.4s var(--ease);
+  }
+  .bucket-item:hover { border-color: var(--line-mid); }
+  .bucket-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; flex-shrink: 0;
+    transition: all 0.3s;
+  }
+  .bucket-icon svg { width: 14px; height: 14px; }
+  .bucket-item.done .bucket-icon {
+    background: var(--dirty); color: var(--milk);
+  }
+  .bucket-item.pending .bucket-icon {
+    border: 1.5px solid var(--line-mid); color: var(--text-mute);
+  }
+  .bucket-text {
+    font-size: 0.92rem; font-weight: 400;
+    flex: 1; letter-spacing: -0.01em;
+  }
+  .bucket-item.done .bucket-text {
+    text-decoration: line-through;
+    opacity: 0.55;
+  }
+  .bucket-status {
+    font-size: 0.62rem; font-weight: 500;
+    letter-spacing: 0.18em; color: var(--dirty);
+  }
+  .bucket-item.pending .bucket-status { color: var(--text-mute); }
+
+  /* ===== جملات ===== */
+  .quotes-box {
+    max-width: 780px; margin: 0 auto;
+    padding: 64px 56px;
+    background: var(--milk);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+    min-height: 320px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .quote-mark {
+    color: var(--pastel); margin-bottom: 24px;
+    display: flex; justify-content: center;
+  }
+  .quote-mark svg { width: 30px; height: 30px; }
+  .quote-slide { display: none; animation: fadeIn 0.6s var(--ease); }
+  .quote-slide.active { display: block; }
+  .quote-text {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 300; line-height: 2.1;
+    color: var(--text); margin-bottom: 24px;
+  }
+  .quote-author {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.2em; color: var(--dirty);
+  }
+  .quote-nav {
+    display: flex; justify-content: center;
+    gap: 12px; margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .quote-btn {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; border: 1px solid var(--line-mid);
+    border-radius: 50%; color: var(--dirty);
+    cursor: pointer; transition: all 0.35s var(--ease);
+  }
+  .quote-btn:hover {
+    background: var(--dirty); color: var(--milk);
+    border-color: var(--dirty);
+  }
+  .quote-btn svg { width: 14px; height: 14px; }
+
+  /* ===== تاریخ‌های خاص ===== */
+  .dates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .date-card {
+    padding: 28px 26px;
+    background: var(--milk);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    transition: all 0.4s var(--ease);
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .date-card:hover { border-color: var(--line-mid); transform: translateY(-3px); }
+  .date-icon {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line-mid); border-radius: 50%;
+    color: var(--dirty); flex-shrink: 0;
+  }
+  .date-icon svg { width: 14px; height: 14px; }
+  .date-info { flex: 1; }
+  .date-card-title {
+    font-size: 0.95rem; font-weight: 500;
+    margin-bottom: 4px; letter-spacing: -0.01em;
+  }
+  .date-value {
+    font-size: 0.78rem; font-weight: 300;
+    color: var(--text-soft);
+  }
+  .date-days {
+    font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.1em; color: var(--dirty);
+    margin-top: 8px;
+  }
+
+  /* ===== فوتر ===== */
+  footer {
+    padding: 80px 32px 44px;
+    background: var(--text); color: var(--milk);
+    text-align: center; position: relative; z-index: 1;
+  }
+  footer .brand {
+    justify-content: center; color: var(--milk);
+    margin-bottom: 20px; display: inline-flex;
+  }
+  footer .brand-mark {
+    border-color: rgba(255, 249, 248, 0.18);
+    color: var(--pastel);
+  }
+  footer p {
+    font-size: 0.72rem; font-weight: 300;
+    color: rgba(255, 249, 248, 0.5); letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  footer .footer-names {
+    font-size: 0.72rem; font-weight: 400;
+    color: var(--pastel); letter-spacing: 0.1em;
+    margin-top: 20px;
+  }
+
+  /* ===== لایت‌باکس ===== */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(73, 50, 60, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 1600; display: none;
+    align-items: center; justify-content: center;
+    padding: 40px; cursor: zoom-out;
+    flex-direction: column; gap: 20px;
+  }
+  .lightbox.active { display: flex; animation: fadeIn 0.3s var(--ease); }
+  .lightbox img {
+    max-width: 90%; max-height: 72vh;
+    object-fit: contain; border-radius: 4px;
+  }
+  .lightbox .lb-ph {
+    width: min(400px, 80vw); height: min(500px, 60vh);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--milk); color: var(--pastel); border-radius: 4px;
+  }
+  .lb-ph svg { width: 38px; height: 38px; }
+  .lb-caption { color: var(--milk); text-align: center; max-width: 600px; }
+  .lb-caption h4 { font-size: 1.05rem; font-weight: 500; margin-bottom: 6px; }
+  .lb-caption p { font-size: 0.8rem; font-weight: 300; color: rgba(255, 249, 248, 0.65); }
+  .lb-close {
+    position: absolute; top: 28px; right: 28px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba(255, 249, 248, 0.2);
+    color: var(--milk); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .lb-close:hover { background: rgba(255, 249, 248, 0.1); border-color: rgba(255, 249, 248, 0.4); }
+  .lb-close svg { width: 15px; height: 15px; }
+
+  /* ===== ریسپانسیو ===== */
+  @media (max-width: 900px) {
+    .site-header { padding: 0 20px; height: 68px; }
+    .nav { display: none; }
+    .hero { padding: 120px 20px 80px; }
+    section { padding: 72px 20px; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); padding: 0 20px 60px; }
+    .stat { padding: 26px 10px; border-right: none; border-bottom: 1px solid var(--line); }
+    .stat:nth-child(2n) { border-left: 1px solid var(--line); }
+    .stat:nth-child(3), .stat:nth-child(4) { border-bottom: none; }
+    .stat-num { font-size: 1.6rem; }
+    .stat-label { font-size: 0.6rem; letter-spacing: 0.1em; }
+    .gallery-grid { gap: 12px; grid-template-columns: repeat(2, 1fr); }
+    .letter-card { padding: 32px 24px; }
+    .quotes-box { padding: 44px 28px; min-height: 280px; }
+    .playlist-item { gap: 14px; padding: 18px 4px; }
+    .playlist-note { display: none; }
+    .playlist-icon { width: 36px; height: 36px; }
+    .playlist-icon svg { width: 12px; height: 12px; }
+    footer { padding: 60px 24px 32px; }
+  }
+  @media (max-width: 480px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-card:nth-child(4n+1), .gallery-card:nth-child(4n+3) { aspect-ratio: 4/5; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== هدر ===== -->
+<header class="site-header">
+  <a href="#" class="brand">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </span>
+    <span class="brand-text" id="brandText">داستانِ ما</span>
+  </a>
+  <nav class="nav">
+    <a href="#gallery">گالری</a>
+    <a href="#timeline">خط زمان</a>
+    <a href="#reasons">دلایل</a>
+    <a href="#letters">نامه‌ها</a>
+    <a href="#playlist">پلی‌لیست</a>
+    <a href="#bucket">آرزوها</a>
+  </nav>
+</header>
+
+<!-- ===== هیرو ===== -->
+<section class="hero">
+  <div class="hero-eyebrow" id="heroEyebrow">جایی برای نگه‌داشتن زیباترین لحظه‌ها</div>
+  <h1 class="hero-title" id="heroTitle">داستانِ ما</h1>
+  <p class="hero-sub" id="heroSub">هر گوشه‌ی این صفحه، یک یادگاری از ماست.</p>
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== آمار ===== -->
+<div class="stats-strip">
+  <div class="stat">
+    <div class="stat-num" id="statDays">۰</div>
+    <div class="stat-label">روز با هم</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" id="statPhotos">۰</div>
+    <div class="stat-label">عکس و خاطره</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num small" id="statNextAnniv">—</div>
+    <div class="stat-label">تا سالگرد بعدی</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num small" id="statReasons">۰</div>
+    <div class="stat-label">دلیل برای دوست داشتن</div>
+  </div>
+</div>
+
+<!-- ===== گالری ===== -->
+<section id="gallery" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">گالری</div>
+      <h2>قاب‌هایی از خاطرات</h2>
+      <p>هر عکس یک قصه است — روی هرکدام کلیک کن تا بزرگ‌تر ببینی.</p>
+    </div>
+    <div class="gallery-tabs" id="galleryTabs"></div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ===== خط زمان ===== -->
+<section id="timeline" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">خط زمان</div>
+      <h2>روزهای مهمِ ما</h2>
+      <p>از اولین دیدار تا امروز — مسیر داستانِ ما.</p>
+    </div>
+    <div class="timeline" id="timelineList"></div>
+  </div>
+</section>
+
+<!-- ===== دلایل ===== -->
+<section id="reasons" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">دلایل</div>
+      <h2>چرا دوستت دارم</h2>
+      <p>اگر بخواهم همه را بگویم، این صفحه تمامی ندارد — این‌ها فقط چند نمونه است.</p>
+    </div>
+    <div class="reasons-grid" id="reasonsGrid"></div>
+  </div>
+</section>
+
+<!-- ===== نامه‌ها ===== -->
+<section id="letters" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">نامه‌ها</div>
+      <h2>نامه‌هایی برای تو</h2>
+      <p>حرف‌هایی که گاهی گفتنشان سخت است — نوشتم تا بمانند.</p>
+    </div>
+    <div class="letters-list" id="lettersList"></div>
+  </div>
+</section>
+
+<!-- ===== پلی‌لیست ===== -->
+<section id="playlist" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">پلی‌لیست</div>
+      <h2>آهنگ‌های ما</h2>
+      <p>هر آهنگ، یک خاطره‌ی صوتی از لحظه‌هایمان.</p>
+    </div>
+    <div class="playlist-list" id="playlistList"></div>
+  </div>
+</section>
+
+<!-- ===== آرزوها ===== -->
+<section id="bucket" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">آرزوها</div>
+      <h2>کارهایی که با هم می‌کنیم</h2>
+      <p>لیست کارهایی که قرار است با هم تجربه کنیم — بعضی‌ها انجام شدند، بعضی‌ها منتظرند.</p>
+    </div>
+    <div class="bucket-list" id="bucketList"></div>
+  </div>
+</section>
+
+<!-- ===== جملات ===== -->
+<section id="quotes" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">جملات</div>
+      <h2>حرف‌هایی که مانده‌اند</h2>
+    </div>
+    <div class="quotes-box">
+      <div class="quote-mark">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+        </svg>
+      </div>
+      <div id="quoteSlides"></div>
+      <div class="quote-nav">
+        <button class="quote-btn" id="quotePrev" aria-label="قبلی">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+        <button class="quote-btn" id="quoteNext" aria-label="بعدی">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== تاریخ‌های خاص ===== -->
+<section id="dates" class="reveal">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-tag">تاریخ‌ها</div>
+      <h2>روزهای خاصِ ما</h2>
+      <p>روزهایی که هر سال منتظرشان هستیم.</p>
+    </div>
+    <div class="dates-grid" id="datesGrid"></div>
+  </div>
+</section>
+
+<!-- ===== فوتر ===== -->
+<footer>
+  <div class="brand">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </span>
+    <span class="brand-text">داستانِ ما</span>
+  </div>
+  <p>ساخته‌شده با عشق — برای نگه‌داشتن لحظه‌هایی که نمی‌خواهیم فراموش شوند.</p>
+  <div class="footer-names" id="footerNames">—</div>
+</footer>
+
+<!-- ===== لایت‌باکس ===== -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <div id="lbContent"></div>
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   ═══════════════════  فقط این بخش را ویرایش کن  ═══════════════════
+   ═══════════════════════════════════════════════════════════════════
+
+   راهنمای عکس‌ها — برای هر عکس سه راه داری:
+   ۱) آدرس اینترنتی:        img: "https://example.com/photo.jpg"
+   ۲) مسیر فایل محلی:       img: "photos/photo1.jpg"  (کنار فایل html بگذار)
+   ۳) عکس Base64 در خود کد: img: "data:image/jpeg;base64,/9j/4AAQ..."
+   ۴) بدون عکس:             img: null   (آیکون جایگزین نشان می‌دهد)
+   ─────────────────────────────────────────────────────────────── */
+
+const SITE_DATA = {
+
+  /* ────────── اطلاعات پایه ────────── */
+  names: {
+    name1: 'نام تو',
+    name2: 'نام او',
+    startDate: '2023-06-15',   // YYYY-MM-DD — تاریخ شروع آشنایی
+  },
+
+  hero: {
+    eyebrow: 'جایی برای نگه‌داشتن زیباترین لحظه‌ها',
+    title: 'داستانِ ما',
+    subtitle: 'هر گوشه‌ی این صفحه، یک یادگاری از ماست. عکس‌ها، روزهای مهم، حرف‌های نگفته — همه اینجا هستند تا بمانند.',
+  },
+
+  /* ────────── گالری عکس‌ها ────────── */
+  gallery: [
+    {
+      title: 'اولین دیدار',
+      date: '۱۴۰۲/۰۳/۲۵',
+      category: 'شروع',
+      img: null,
+    },
+    {
+      title: 'غروب کنار دریا',
+      date: '۱۴۰۲/۰۷/۱۲',
+      category: 'سفر',
+      img: null,
+    },
+    {
+      title: 'کافه‌ی همیشگی',
+      date: '۱۴۰۲/۰۸/۰۴',
+      category: 'روزمره',
+      img: null,
+    },
+    {
+      title: 'جشن تولد',
+      date: '۱۴۰۲/۱۱/۲۰',
+      category: 'مناسبت',
+      img: null,
+    },
+    {
+      title: 'سفر شمال',
+      date: '۱۴۰۳/۰۱/۰۵',
+      category: 'سفر',
+      img: null,
+    },
+    {
+      title: 'قدم زدن زیر باران',
+      date: '۱۴۰۳/۰۲/۱۸',
+      category: 'روزمره',
+      img: null,
+    },
+    {
+      title: 'سالگرد اول',
+      date: '۱۴۰۳/۰۳/۲۵',
+      category: 'مناسبت',
+      img: null,
+    },
+    {
+      title: 'پیک‌نیک بهاری',
+      date: '۱۴۰۳/۰۴/۱۰',
+      category: 'روزمره',
+      img: null,
+    },
+    // 👇 عکس‌های بیشتر را اینجا اضافه کن
+  ],
+
+  /* ────────── خط زمان ────────── */
+  timeline: [
+    { date: '۱۴۰۲/۰۳/۲۵', title: 'اولین دیدار', desc: 'روزی که دنیا رنگ گرفت و همه‌چیز از اینجا شروع شد.' },
+    { date: '۱۴۰۲/۰۴/۰۲', title: 'اولین قرار', desc: 'کافه‌ی همیشگی، دو فنجان قهوه و کلی حرف نگفته.' },
+    { date: '۱۴۰۲/۰۷/۱۲', title: 'اولین سفر', desc: 'جاده، موسیقی و تو — بهترین ترکیب دنیا.' },
+    { date: '۱۴۰۳/۰۳/۲۵', title: 'یک سال با هم', desc: 'یک سال گذشت و هر روزش ارزش داشت.' },
+    { date: '۱۴۰۳/۰۸/۱۰', title: 'آشنایی با خانواده', desc: 'قدم بعدی — و همه‌چیز خوب پیش رفت.' },
+    // 👇 خاطرات بیشتر را اضافه کن
+  ],
+
+  /* ────────── دلایل عاشقانه ────────── */
+  reasons: [
+    { title: 'لبخندت', desc: 'همان لبخندی که هر روز صبح، حال کل روزم را عوض می‌کند.' },
+    { title: 'آرامشت', desc: 'کنار تو، دنیا جای امن‌تری است — هیچ چیز نمی‌تواند نگرانم کند.' },
+    { title: 'حرف‌هایت', desc: 'دلم برای صدایت تنگ می‌شود، حتی وقتی فقط یک دقیقه ساکت می‌مانی.' },
+    { title: 'مهربانی‌ات', desc: 'جوری با آدم‌ها رفتار می‌کنی که یاد می‌گیرم چطور بهتر باشم.' },
+    { title: 'دیوانه‌بازی‌هایت', desc: 'همان لحظه‌هایی که بدون خندیدن از کنارشان نمی‌شود گذشت.' },
+    { title: 'چشم‌هایت', desc: 'یک دنیا حرف در آنهاست — و من هنوز یاد نگرفته‌ام همه را بخوانم.' },
+    { title: 'سبک زندگی‌ات', desc: 'جوری زندگی می‌کنی که آدم دوست دارد بخشی از آن باشد.' },
+    { title: 'همه‌چیزت', desc: 'و در واقع، دلیلی برای «نچسبیدن» پیدا نکرده‌ام.' },
+    // 👇 دلایل بیشتر را اضافه کن
+  ],
+
+  /* ────────── نامه‌ها ────────── */
+  letters: [
+    {
+      date: '۱۴۰۲/۰۴/۱۵',
+      title: 'اولین نامه',
+      body: 'نمی‌دانستم از کجا شروع کنم، ولی می‌دانستم باید بنویسم. از همان روز اول فهمیدم چیزی در تو هست که مرا آرام می‌کند. حالا ماه‌ها گذشته و هنوز همان حس را دارم.',
+    },
+    {
+      date: '۱۴۰۲/۱۰/۰۲',
+      title: 'برای روزهای سخت',
+      body: 'بعضی روزها سخت‌اند، می‌دانم. ولی می‌خواهم بدانی که در هر شرایطی، پشتت هستم. حتی اگر دنیا علیه تو باشد، من کنارت می‌مانم — این یک قول است.',
+    },
+    {
+      date: '۱۴۰۳/۰۳/۲۵',
+      title: 'سالگرد اول',
+      body: 'یک سال گذشت. یک سال پر از لحظه‌هایی که اگر تصویرشان را قاب می‌گرفتیم، دیوار خانه پر می‌شد. ممنون که این یک سال را ساختی — و ممنون که سال‌های بعدی هم قرار است بسازیم.',
+    },
+    // 👇 نامه‌های بیشتر را اضافه کن
+  ],
+
+  /* ────────── پلی‌لیست ────────── */
+  playlist: [
+    { title: 'آهنگ اول ما', artist: 'خواننده', note: 'آهنگی که اولین بار با هم شنیدیم' },
+    { title: 'آهنگ سفر', artist: 'خواننده', note: 'همان که در جاده تکرار کردیم' },
+    { title: 'آهنگ آرامش', artist: 'خواننده', note: 'برای شب‌های آرام' },
+    { title: 'آهنگ رقص', artist: 'خواننده', note: 'که در آشپزخانه با هم رقصیدیم' },
+    // 👇 آهنگ‌های بیشتر را اضافه کن
+  ],
+
+  /* ────────── آرزوها / باکت لیست ────────── */
+  bucketList: [
+    { title: 'سفر به پاریس', done: false },
+    { title: 'قدم زدن زیر باران بدون چتر', done: true },
+    { title: 'دیدن طلوع آفتاب از کوه', done: true },
+    { title: 'یاد گرفتن یک زبان جدید با هم', done: false },
+    { title: 'پختن یک غذای کامل با هم', done: true },
+    { title: 'رفتن به کنسرت مشترک', done: false },
+    { title: 'نوشتن یک دفتر خاطرات مشترک', done: true },
+    { title: 'دیدن شفق قطبی', done: false },
+    // 👇 آرزوهای بیشتر را اضافه کن
+  ],
+
+  /* ────────── جملات ────────── */
+  quotes: [
+    { text: 'عشق فقط نگاه کردن به یکدیگر نیست، نگاه کردن به یک جهت است.', author: 'آنتوان دو سنت اگزوپری' },
+    { text: 'در میان تمام دنیا، تو تنها کسی هستی که قلبم برایش می‌تپد.', author: '—' },
+    { text: 'هر روزی که با تو نیستم، یک روز از دست رفته است.', author: '—' },
+    { text: 'اگر می‌توانستم زمان را نگه دارم، لحظه‌های با تو را انتخاب می‌کردم.', author: '—' },
+    // 👇 جملات بیشتر را اضافه کن
+  ],
+
+  /* ────────── تاریخ‌های خاص ────────── */
+  specialDates: [
+    { title: 'تولد او', date: '11-20', type: 'birthday' },     // MM-DD
+    { title: 'تولد تو', date: '03-15', type: 'birthday' },
+    { title: 'سالگرد آشنایی', date: '06-15', type: 'anniversary' },
+    { title: 'سالگرد اولین قرار', date: '06-22', type: 'anniversary' },
+    // 👇 تاریخ‌های بیشتر را اضافه کن (ماه-روز)
+  ],
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   از اینجا به بعد را نیازی نیست ویرایش کنی
+   ═══════════════════════════════════════════════════════════════════ */
+
+const ICONS = {
+  image: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
+  calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  music: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  circle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>`,
+  gift: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
+};
+
+/* ────────── کمکی ────────── */
+const toFa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+/* ────────── هیرو و برند ────────── */
+function renderHero() {
+  const { names, hero } = SITE_DATA;
+  document.getElementById('heroEyebrow').textContent = hero.eyebrow;
+  document.getElementById('heroTitle').innerHTML = `${esc(hero.title)}<span class="accent">${esc(names.name1)} و ${esc(names.name2)}</span>`;
+  document.getElementById('heroSub').textContent = hero.subtitle;
+  document.getElementById('brandText').textContent = `${names.name1} و ${names.name2}`;
+  document.getElementById('footerNames').textContent = `${names.name1}  ·  ${names.name2}`;
+}
+
+/* ────────── آمار ────────── */
+function nextAnniversary(startDateStr) {
+  const s = new Date(startDateStr + 'T00:00:00');
+  const now = new Date();
+  const thisYear = new Date(now.getFullYear(), s.getMonth(), s.getDate());
+  const next = thisYear >= new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    ? thisYear
+    : new Date(now.getFullYear() + 1, s.getMonth(), s.getDate());
+  return Math.ceil((next - now) / 86400000);
+}
+
+function renderStats() {
+  const start = new Date(SITE_DATA.names.startDate + 'T00:00:00');
+  const days = Math.max(0, Math.floor((new Date() - start) / 86400000));
+  document.getElementById('statDays').textContent = toFa(days);
+  const photos = SITE_DATA.gallery.filter(g => g.img).length;
+  document.getElementById('statPhotos').textContent = toFa(SITE_DATA.gallery.length);
+  const anniv = nextAnniversary(SITE_DATA.names.startDate);
+  document.getElementById('statNextAnniv').innerHTML = `${toFa(anniv)}<span class="unit">روز</span>`;
+  document.getElementById('statReasons').textContent = toFa(SITE_DATA.reasons.length);
+}
+
+/* ────────── گالری ────────── */
+let activeCategory = 'همه';
+
+function renderGalleryTabs() {
+  const tabs = document.getElementById('galleryTabs');
+  const categories = ['همه', ...new Set(SITE_DATA.gallery.map(g => g.category).filter(Boolean))];
+  tabs.innerHTML = categories.map(cat => 
+    `<button class="gallery-tab ${cat === activeCategory ? 'active' : ''}" data-cat="${esc(cat)}">${esc(cat)}</button>`
+  ).join('');
+  tabs.querySelectorAll('.gallery-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCategory = btn.dataset.cat;
+      renderGalleryTabs();
+      renderGallery();
+    });
+  });
+}
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const filtered = activeCategory === 'همه'
+    ? SITE_DATA.gallery
+    : SITE_DATA.gallery.filter(g => g.category === activeCategory);
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state">${ICONS.image}<h3>عکسی در این دسته نیست</h3><p>دسته‌ی دیگری را انتخاب کن.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+  filtered.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'gallery-card';
+    card.addEventListener('click', () => openLightbox(item));
+
+    if (item.img) {
+      const img = document.createElement('img');
+      img.src = item.img;
+      img.alt = item.title || '';
+      img.loading = 'lazy';
+      img.onerror = () => {
+        img.replaceWith(Object.assign(document.createElement('div'), {
+          className: 'gallery-ph', innerHTML: ICONS.image
+        }));
+      };
+      card.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'gallery-ph';
+      ph.innerHTML = ICONS.image;
+      card.appendChild(ph);
+    }
+
+    const ov = document.createElement('div');
+    ov.className = 'gallery-overlay';
+    ov.innerHTML = `
+      <div class="title">${esc(item.title || '')}</div>
+      <div class="date">${esc(item.date || '')}</div>
+    `;
+    card.appendChild(ov);
+    grid.appendChild(card);
+  });
+}
+
+/* ────────── خط زمان ────────── */
+function renderTimeline() {
+  const list = document.getElementById('timelineList');
+  if (!SITE_DATA.timeline.length) {
+    list.innerHTML = `<div class="empty-state">${ICONS.calendar}<h3>خط زمان خالی است</h3></div>`;
+    return;
+  }
+  list.innerHTML = SITE_DATA.timeline.map(item => `
+    <div class="timeline-item">
+      <span class="timeline-date">${esc(item.date)}</span>
+      <h3>${esc(item.title)}</h3>
+      ${item.desc ? `<p>${esc(item.desc)}</p>` : ''}
+    </div>
+  `).join('');
+}
+
+/* ────────── دلایل ────────── */
+function renderReasons() {
+  const grid = document.getElementById('reasonsGrid');
+  if (!SITE_DATA.reasons.length) {
+    grid.innerHTML = `<div class="empty-state">${ICONS.circle}<h3>هنوز دلیلی ثبت نشده</h3></div>`;
+    return;
+  }
+  grid.innerHTML = SITE_DATA.reasons.map((r, i) => `
+    <div class="reason-card">
+      <div class="reason-num">${toFa(String(i + 1).padStart(2, '0'))}</div>
+      <h3>${esc(r.title)}</h3>
+      <p>${esc(r.desc)}</p>
+    </div>
+  `).join('');
+}
+
+/* ────────── نامه‌ها ────────── */
+function renderLetters() {
+  const list = document.getElementById('lettersList');
+  if (!SITE_DATA.letters.length) {
+    list.innerHTML = `<div class="empty-state">${ICONS.calendar}<h3>نامه‌ای نوشته نشده</h3></div>`;
+    return;
+  }
+  list.innerHTML = SITE_DATA.letters.map(l => `
+    <div class="letter-card">
+      <div class="letter-meta">
+        <div class="letter-title">${esc(l.title)}</div>
+        <div class="letter-date">${esc(l.date)}</div>
+      </div>
+      <div class="letter-body">${esc(l.body)}</div>
+    </div>
+  `).join('');
+}
+
+/* ────────── پلی‌لیست ────────── */
+function renderPlaylist() {
+  const list = document.getElementById('playlistList');
+  if (!SITE_DATA.playlist.length) {
+    list.innerHTML = `<div class="empty-state">${ICONS.music}<h3>پلی‌لیست خالی است</h3></div>`;
+    return;
+  }
+  list.innerHTML = SITE_DATA.playlist.map((p, i) => `
+    <div class="playlist-item">
+      <div class="playlist-num">${toFa(String(i + 1).padStart(2, '0'))}</div>
+      <div class="playlist-icon">${ICONS.music}</div>
+      <div class="playlist-info">
+        <div class="playlist-title">${esc(p.title)}</div>
+        <div class="playlist-artist">${esc(p.artist)}</div>
+      </div>
+      ${p.note ? `<div class="playlist-note">${esc(p.note)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+/* ────────── آرزوها ────────── */
+function renderBucket() {
+  const list = document.getElementById('bucketList');
+  if (!SITE_DATA.bucketList.length) {
+    list.innerHTML = `<div class="empty-state">${ICONS.check}<h3>آرزویی ثبت نشده</h3></div>`;
+    return;
+  }
+  list.innerHTML = SITE_DATA.bucketList.map(b => `
+    <div class="bucket-item ${b.done ? 'done' : 'pending'}">
+      <div class="bucket-icon">${b.done ? ICONS.check : ICONS.circle}</div>
+      <div class="bucket-text">${esc(b.title)}</div>
+      <div class="bucket-status">${b.done ? 'انجام شد' : 'در انتظار'}</div>
+    </div>
+  `).join('');
+}
+
+/* ────────── جملات ────────── */
+let quoteIndex = 0;
+let quoteTimer;
+
+function renderQuotes() {
+  const container = document.getElementById('quoteSlides');
+  if (!SITE_DATA.quotes.length) {
+    container.innerHTML = `<div class="empty-state">${ICONS.circle}<h3>جمله‌ای نیست</h3></div>`;
+    return;
+  }
+  container.innerHTML = SITE_DATA.quotes.map((q, i) => `
+    <div class="quote-slide ${i === 0 ? 'active' : ''}">
+      <div class="quote-text">«${esc(q.text)}»</div>
+      <div class="quote-author">${esc(q.author)}</div>
+    </div>
+  `).join('');
+  startQuoteAuto();
+}
+
+function showQuote(i) {
+  const slides = document.querySelectorAll('.quote-slide');
+  if (!slides.length) return;
+  slides.forEach(s => s.classList.remove('active'));
+  quoteIndex = (i + slides.length) % slides.length;
+  slides[quoteIndex].classList.add('active');
+}
+function startQuoteAuto() {
+  clearInterval(quoteTimer);
+  if (SITE_DATA.quotes.length > 1) {
+    quoteTimer = setInterval(() => showQuote(quoteIndex + 1), 6000);
+  }
+}
+document.getElementById('quotePrev').addEventListener('click', () => { showQuote(quoteIndex - 1); startQuoteAuto(); });
+document.getElementById('quoteNext').addEventListener('click', () => { showQuote(quoteIndex + 1); startQuoteAuto(); });
+
+/* ────────── تاریخ‌های خاص ────────── */
+function daysUntil(mmdd) {
+  const [m, d] = mmdd.split('-').map(Number);
+  const now = new Date();
+  let target = new Date(now.getFullYear(), m - 1, d);
+  if (target < new Date(now.getFullYear(), now.getMonth(), now.getDate())) {
+    target = new Date(now.getFullYear() + 1, m - 1, d);
+  }
+  return Math.ceil((target - now) / 86400000);
+}
+
+function renderDates() {
+  const grid = document.getElementById('datesGrid');
+  if (!SITE_DATA.specialDates.length) {
+    grid.innerHTML = `<div class="empty-state">${ICONS.calendar}<h3>تاریخی ثبت نشده</h3></div>`;
+    return;
+  }
+  const iconMap = { birthday: ICONS.gift, anniversary: ICONS.calendar, other: ICONS.calendar };
+  grid.innerHTML = SITE_DATA.specialDates.map(dt => {
+    const days = daysUntil(dt.date);
+    const daysTxt = days === 0 ? 'امروز' : days === 1 ? 'فردا' : `${toFa(days)} روز دیگر`;
+    return `
+      <div class="date-card">
+        <div class="date-icon">${iconMap[dt.type] || ICONS.calendar}</div>
+        <div class="date-info">
+          <div class="date-card-title">${esc(dt.title)}</div>
+          <div class="date-value">${esc(dt.date.replace('-', ' / '))}</div>
+          <div class="date-days">${daysTxt}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ────────── لایت‌باکس ────────── */
+const lightbox = document.getElementById('lightbox');
+const lbContent = document.getElementById('lbContent');
+const lbCaption = document.getElementById('lbCaption');
+
+function openLightbox(item) {
+  lbContent.innerHTML = '';
+  if (item.img) {
+    const img = document.createElement('img');
+    img.src = item.img;
+    img.alt = item.title || '';
+    lbContent.appendChild(img);
+  } else {
+    const ph = document.createElement('div');
+    ph.className = 'lb-ph';
+    ph.innerHTML = ICONS.image;
+    lbContent.appendChild(ph);
+  }
+  lbCaption.innerHTML = `
+    <h4>${esc(item.title || '')}</h4>
+    <p>${esc(item.date || '')}</p>
+  `;
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+/* ────────── Scroll Reveal ────────── */
+function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+/* ────────── Nav Active ────────── */
+function initNavActive() {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+}
+
+/* ────────── اجرا ────────── */
+renderHero();
+renderStats();
+renderGalleryTabs();
+renderGallery();
+renderTimeline();
+renderReasons();
+renderLetters();
+renderPlaylist();
+renderBucket();
+renderQuotes();
+renderDates();
+initReveal();
+initNavActive();
+</script>
+</body>
+</html>
